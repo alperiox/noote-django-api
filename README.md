@@ -5,7 +5,7 @@
 
 Simple note taking application. It comes with facial recognition-based authentication methods.
 
-(currently on hold to )
+(currently on hold due to my finals)
 
 
 TODOs:
