@@ -3,7 +3,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth import get_user_model
 
 import os
-import filecmp
+import tempfile
 
 
 class ModelTests(TestCase):
@@ -21,25 +21,14 @@ class ModelTests(TestCase):
         email = "test@test.com"
         password = "TestPassword123"
 
-        with open("./assets_test/1.jpg", "rb") as f:
-            img_file = f.read()
-
-        photo = SimpleUploadedFile(
-            name="test_image.jpg",
-            content=img_file,
-            content_type="image/jpeg",
-        )
+        photo = tempfile.NamedTemporaryFile(suffix=".jpg").read()
 
         user = get_user_model().objects.create_user(
             email=email, password=password, photo=photo
         )
 
-
         self.assertEqual(user.email, email)
         self.assertTrue(user.check_password(password))
-        self.assertTrue(filecmp.cmp("uploaded_photo.jpg", "test_image.jpg"))
-
-        os.remove("uploaded_photo.jpg")
 
     def test_email_is_normalized(self):
         """Test creating a new user with email that contains uppercase case characters"""
