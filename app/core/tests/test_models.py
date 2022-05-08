@@ -20,27 +20,26 @@ class ModelTests(TestCase):
         """Test creating a new user with an email is successful"""
         email = "test@test.com"
         password = "TestPassword123"
-        
+
         with open("./assets_test/1.jpg", "rb") as f:
             img_file = f.read()
-        
+
         photo = SimpleUploadedFile(
             name="test_image.jpg",
             content=img_file,
             content_type="image/jpeg",
         )
-        
+
         user = get_user_model().objects.create_user(
             email=email, password=password, photo=photo
         )
 
         with open("uploaded_photo.jpg", "wb") as f:
             f.write(img_file)
-        
+
         self.assertEqual(user.email, email)
         self.assertTrue(user.check_password(password))
         self.assertTrue(filecmp.cmp("uploaded_photo.jpg", "test_image.jpg"))
-        
 
         os.remove("test_image.jpg")
         os.remove("uploaded_photo.jpg")
