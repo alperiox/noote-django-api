@@ -34,14 +34,11 @@ class ModelTests(TestCase):
             email=email, password=password, photo=photo
         )
 
-        with open("uploaded_photo.jpg", "wb") as f:
-            f.write(img_file)
 
         self.assertEqual(user.email, email)
         self.assertTrue(user.check_password(password))
         self.assertTrue(filecmp.cmp("uploaded_photo.jpg", "test_image.jpg"))
 
-        os.remove("test_image.jpg")
         os.remove("uploaded_photo.jpg")
 
     def test_email_is_normalized(self):
